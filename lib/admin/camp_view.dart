@@ -5,22 +5,21 @@ import 'package:flutter/material.dart';
 import '../constants/custom_colors.dart';
 import '../database.dart';
 
-class AdminMedicinesView extends StatefulWidget {
-  const AdminMedicinesView({super.key});
+class CampView extends StatefulWidget {
+  const CampView({super.key});
 
   @override
-  State<AdminMedicinesView> createState() => _AdminMedicinesViewState();
+  State<CampView> createState() => _CampViewState();
 }
 
-class _AdminMedicinesViewState extends State<AdminMedicinesView> {
-
+class _CampViewState extends State<CampView> {
 
   int _rateValue = 5;
 
-  Stream? medicineStream;
+  Stream? campStream;
 
   getOnTheLoad() async{
-    medicineStream = await DataBaseMethods().getMedicine();
+    campStream = await DataBaseMethods().getCamps();
     setState(() {});
   }
 
@@ -45,7 +44,7 @@ class _AdminMedicinesViewState extends State<AdminMedicinesView> {
             child: SizedBox(
               width: 300,
               child: StreamBuilder(
-                  stream: medicineStream,
+                  stream: campStream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     return snapshot.hasData? ListView.builder(
                         itemCount: snapshot.data.docs.length,
@@ -99,7 +98,6 @@ class _AdminMedicinesViewState extends State<AdminMedicinesView> {
                                               color: Colors.white,
                                               size: 15,
                                             ),
-                                            
                                             Icon(
                                               Icons.star,
                                               color: Colors.white,
@@ -121,12 +119,12 @@ class _AdminMedicinesViewState extends State<AdminMedicinesView> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(ds["Name"],
+                                        Text(ds["Location"],
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 decoration: TextDecoration.none,
                                                 fontSize: 15,fontWeight: FontWeight.bold)),
-                                        Text(ds["Usage"],
+                                        Text(ds["Phone"],
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 decoration: TextDecoration.none,

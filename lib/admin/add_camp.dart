@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peaceful_pulse_admin/models/camp_model.dart';
 import 'package:random_string/random_string.dart';
 
 import '../constants/custom_colors.dart';
@@ -17,17 +18,16 @@ class AddCamp extends StatefulWidget {
 }
 
 class _AddCampState extends State<AddCamp> {
-
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController locationController= TextEditingController();
-  final TextEditingController dateController= TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController centerNameController= TextEditingController();
+  final TextEditingController centerNameController = TextEditingController();
 
   late DateTime? date;
-  List<String> centerNames=[];
-  List<Map<String, dynamic>> centerList=[];
-  String center= "";
+  List<String> centerNames = [];
+  List<Map<String, dynamic>> centerList = [];
+  String center = "";
 
   Future<void> dateSelect(BuildContext context) async {
     final DateTime? newSelectedDate = await showDatePicker(
@@ -49,14 +49,14 @@ class _AddCampState extends State<AddCamp> {
     super.initState();
   }
 
-  Future callingCenters()async{
-    centerNames=[];
+  Future callingCenters() async {
+    centerNames = [];
 
-    // final snapshotCen=await  DataBaseMethods().getCenterDetails();
-    // for (var doc in snapshotCen.docs) {
-    //   centerList.add(doc.data());
-    //   centerNames.add(doc["Name"]);
-    // }
+    final snapshotCen = await DataBaseMethods().getCenterDetails();
+    for (var doc in snapshotCen.docs) {
+      centerList.add(doc.data());
+      centerNames.add(doc["Name"]);
+    }
   }
 
   @override
@@ -87,7 +87,7 @@ class _AddCampState extends State<AddCamp> {
                     child: Column(
                       children: [
                         Text(
-                          "Add Centers",
+                          "Add camp details",
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -117,21 +117,21 @@ class _AddCampState extends State<AddCamp> {
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: DropdownMenu<String>(
-                                  initialSelection: "Doctor",
-                                  onSelected: (String? value) {
+                                  initialSelection: "Center",
+                                  dropdownMenuEntries: centerNames
+                                      .map<DropdownMenuEntry<String>>(
+                                          (String value) {
+                                    return DropdownMenuEntry<String>(
+                                        value: value, label: value);
+                                  }).toList(),
+                                  onSelected: (value) {
                                     setState(() {
                                       center = value!;
                                     });
                                   },
-                                  dropdownMenuEntries: centerNames
-                                      .map<DropdownMenuEntry<String>>((String value) {
-                                    return DropdownMenuEntry<String>(
-                                        value: value, label: value);
-                                  }).toList(),
                                 ),
                               );
-                            }
-                        ),
+                            }),
                         TextFormField(
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
@@ -149,8 +149,8 @@ class _AddCampState extends State<AddCamp> {
                         ),
                         TextFormField(
                           controller: dateController,
-                          validator: (date){
-                            if (date== null || date.isEmpty){
+                          validator: (date) {
+                            if (date == null || date.isEmpty) {
                               return 'Please enter a date';
                             }
                             return null;
@@ -158,7 +158,8 @@ class _AddCampState extends State<AddCamp> {
                           decoration: InputDecoration(
                               hintText: 'Date in YYYY-MM-DD',
                               border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
                               suffixIcon: IconButton(
                                   onPressed: () => dateSelect(context),
                                   icon: const Icon(
@@ -179,31 +180,40 @@ class _AddCampState extends State<AddCamp> {
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       String id = randomAlphaNumeric(10);
+                                      // CampModel campInfo = CampModel(
+                                      //     center: centerNameController.text,
+                                      //     campDate: dateController.text,
+                                      //     phoneNumber: phoneController.text,
+                                      //     location: locationController.text);
                                       Map<String, dynamic> campInfoMap = {
                                         "Location": locationController.text,
                                         "Date": dateController.text,
                                         "Phone": phoneController.text,
-                                        "Center Name": centerNameController.text,
+                                        "Center Name":
+                                            centerNameController.text,
                                         "id": id
                                       };
                                       await DataBaseMethods()
                                           .addCamps(campInfoMap, id)
                                           .then((value) {
                                         Fluttertoast.showToast(
-                                            msg: "Data Uploaded Successfully",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIosWeb: 1,
-                                            backgroundColor: Colors.grey,
-                                            textColor: Colors.white,
-                                            fontSize: 16.0).then((value) => Navigator.pop(context));
+                                                msg:
+                                                    "Data Uploaded Successfully",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.grey,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0)
+                                            .then((value) =>
+                                                Navigator.pop(context));
                                       });
                                     }
                                   },
                                   style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(5)),
+                                              BorderRadius.circular(5)),
                                       foregroundColor: Colors.black,
                                       backgroundColor: Colors.white),
                                   child: const Padding(

@@ -19,7 +19,7 @@ class _CentersViewState extends State<CentersView> {
   Stream? centerStream;
 
   getOnTheLoad() async{
-    centerStream = await DataBaseMethods().getCenterDetails();
+    centerStream = await DataBaseMethods().getCenters();
     setState(() {});
   }
 

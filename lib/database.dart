@@ -41,6 +41,10 @@ class DataBaseMethods{
         .set(medicineInfoMap);
   }
 
+  Future<Stream<QuerySnapshot>> getMedicine() async{
+    return await FirebaseFirestore.instance.collection("Medicine").snapshots();
+  }
+
   Future addAmbulance(Map<String, dynamic> ambulanceInfoMap, String id) async {
     return await FirebaseFirestore.instance
         .collection("Ambulance")
@@ -84,12 +88,20 @@ class DataBaseMethods{
         .doc(id).collection("doctor").add(doctorInfoMap);
   }
 
-  Future<Stream<QuerySnapshot>>getCenterDetails()async{
+  Future<QuerySnapshot<Map<String, dynamic>>>getCenterDetails()async{
+    return await FirebaseFirestore.instance.collection("Centers").get();
+  }
+
+  Future<Stream<QuerySnapshot>> getCenters() async{
     return await FirebaseFirestore.instance.collection("Centers").snapshots();
   }
 
   Future removeCenter(String id) async{
     return await FirebaseFirestore.instance.collection("Centers").doc(id).delete();
+  }
+
+  Future<Stream<QuerySnapshot>> getCamps() async{
+    return await FirebaseFirestore.instance.collection("Camps").snapshots();
   }
 
   Reference reference = FirebaseStorage.instance.ref();

@@ -7,6 +7,7 @@ import 'package:peaceful_pulse_admin/admin/admin_login.dart';
 import 'package:peaceful_pulse_admin/admin/admin_officials_view.dart';
 import 'package:peaceful_pulse_admin/admin/admin_medicines_view.dart';
 import 'package:peaceful_pulse_admin/bin/first_page_ui.dart';
+import 'package:peaceful_pulse_admin/splash_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Peaceful Pulse Admin',
-      home: AdminHome(),
+      home: SplashScreen(),
     );
   }
 }

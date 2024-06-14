@@ -53,12 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDi2_GhciJhY3gTpwzykk_iTG287h7UEBI',
-    appId: '1:142814119034:web:310e39e0eba509d84ae7c3',
-    messagingSenderId: '142814119034',
-    projectId: 'peaceful-pulse-35af5',
-    authDomain: 'peaceful-pulse-35af5.firebaseapp.com',
-    storageBucket: 'peaceful-pulse-35af5.appspot.com',
-    measurementId: 'G-E0BZ3EKQBM',
+    apiKey: 'AIzaSyDyWdSZKwrin0ykr2XjgKfyG6IrgYUBNHs',
+    appId: '1:187586746885:web:fee2a24cdf08e65406da6c',
+    messagingSenderId: '187586746885',
+    projectId: 'peaceful-pulse-c17ab',
+    authDomain: 'peaceful-pulse-c17ab.firebaseapp.com',
+    storageBucket: 'peaceful-pulse-c17ab.appspot.com',
+    measurementId: 'G-QTEHVNFZWF',
   );
 }

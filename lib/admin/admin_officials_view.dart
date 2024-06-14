@@ -66,18 +66,12 @@ class _AdminOfficialsViewState extends State<AdminOfficialsView> {
                                 children: [
                                   Column(
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black,
-                                                blurRadius: 3.0,
-                                              )
-                                            ],
-                                        ),
+                                      SizedBox(
                                         width: 90,
                                         height: 60,
+                                        child: ds.exists
+                                            ? Image.network(ds["Image"],)
+                                            : const Center(child: Text("Photo")),
                                       ),
                                       Row(
                                         children: [

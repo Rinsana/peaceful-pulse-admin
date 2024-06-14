@@ -56,16 +56,16 @@ class _AddMedicinesState extends State<AddMedicines> {
   @override
   void initState() {
     super.initState();
-    mfgDate = DateTime(2021, 7, 25);
-    expDate = DateTime(2021, 7, 25);
+    mfgDate = DateTime(2024, 1, 1);
+    expDate = DateTime(2025, 1, 1);
   }
 
   Future<void> mfgDateSelect(BuildContext context) async {
     final DateTime? newSelectedDate = await showDatePicker(
       context: context,
       initialDate: mfgDate,
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2022),
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2027),
     );
     if (newSelectedDate != null) {
       setState(() {
@@ -77,9 +77,9 @@ class _AddMedicinesState extends State<AddMedicines> {
   Future<void> expDateSelect(BuildContext context) async {
     final DateTime? newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: mfgDate,
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2022),
+      initialDate: expDate,
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2027),
     );
     if (newSelectedDate != null) {
       setState(() {

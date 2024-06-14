@@ -9,7 +9,9 @@ import 'package:peaceful_pulse_admin/admin/add_camp.dart';
 import 'package:peaceful_pulse_admin/admin/add_centers.dart';
 import 'package:peaceful_pulse_admin/admin/add_medicine.dart';
 import 'package:peaceful_pulse_admin/admin/admin_add_officials.dart';
+import 'package:peaceful_pulse_admin/admin/admin_medicines_view.dart';
 import 'package:peaceful_pulse_admin/admin/admin_officials_view.dart';
+import 'package:peaceful_pulse_admin/admin/camp_view.dart';
 import 'package:peaceful_pulse_admin/admin/centers_view.dart';
 import 'package:peaceful_pulse_admin/constants/custom_colors.dart';
 import 'package:peaceful_pulse_admin/constants/custom_icon_button.dart';
@@ -35,8 +37,8 @@ class _AdminHomeState extends State<AdminHome> {
 
   List<Widget>viewPages=[
     AdminOfficialsView(),
-    Text("Medicine view"),
-    Text("Camp view"),
+    AdminMedicinesView(),
+    CampView(),
     CentersView(),
     Text("Notifications view"),
   ];
@@ -53,7 +55,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: CustomColors.primaryColor,
+            image: DecorationImage(image: AssetImage('assets/images/home_image.png'))
         ),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

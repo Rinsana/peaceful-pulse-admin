@@ -32,9 +32,9 @@ class _AdminLoginState extends State<AdminLogin> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              color: CustomColors.adminPrimary,
-              width: 200,
-              height: 200,
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/home_image.png"))),
+              width: 300,
+              height: 260,
             ),
             SizedBox(
               width: 450,

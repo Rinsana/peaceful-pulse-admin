@@ -32,47 +32,44 @@ class _AddCentersState extends State<AddCenters> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  List<Map<String, dynamic>> doctorList=[];
-  List<Map<String, dynamic>> volunteerList=[];
-  List<Map<String, dynamic>> ambulanceList=[];
-  String doctor= "";
-  String volunteer= "";
-  String ambulance= "";
-  List<String> doctorNames= [];
-  List<String> volunteerNames= [];
-  List<String> ambulanceNames= [];
-  Map<String, dynamic>? selectedDoc= {};
-  Map<String, dynamic>? selectedVol= {};
-  Map<String, dynamic>? selectedAmb= {};
+  List<Map<String, dynamic>> doctorList = [];
+  List<Map<String, dynamic>> volunteerList = [];
+  List<Map<String, dynamic>> ambulanceList = [];
+  String doctor = "";
+  String volunteer = "";
+  String ambulance = "";
+  List<String> doctorNames = [];
+  List<String> volunteerNames = [];
+  List<String> ambulanceNames = [];
 
- Future callingDoctors()async{
-   doctorNames = [];
+  Future callingDoctors() async {
+    doctorNames = [];
 
-    final snapshotDoc=await  DataBaseMethods().getDoctor();
+    final snapshotDoc = await DataBaseMethods().getDoctor();
     for (var doc in snapshotDoc.docs) {
       doctorList.add(doc.data());
       doctorNames.add(doc["Name"]);
     }
   }
 
-  Future callingVolunteers()async{
-   volunteerNames=[];
+  Future callingVolunteers() async {
+    volunteerNames = [];
 
-   final snapshotVol=await  DataBaseMethods().getVolunteer();
-   for (var doc in snapshotVol.docs) {
-     volunteerList.add(doc.data());
-     volunteerNames.add(doc["Name"]);
-   }
+    final snapshotVol = await DataBaseMethods().getVolunteer();
+    for (var doc in snapshotVol.docs) {
+      volunteerList.add(doc.data());
+      volunteerNames.add(doc["Name"]);
+    }
   }
 
-  Future callingAmbulance()async{
-   ambulanceNames=[];
+  Future callingAmbulance() async {
+    ambulanceNames = [];
 
-   final snapshotAmb=await  DataBaseMethods().getAmbulance();
-   for (var doc in snapshotAmb.docs) {
-     ambulanceList.add(doc.data());
-     ambulanceNames.add(doc["Name"]);
-   }
+    final snapshotAmb = await DataBaseMethods().getAmbulance();
+    for (var doc in snapshotAmb.docs) {
+      ambulanceList.add(doc.data());
+      ambulanceNames.add(doc["Name"]);
+    }
   }
 
   File? selectedImage;
@@ -84,7 +81,7 @@ class _AddCentersState extends State<AddCenters> {
   Future<void> _pickImage() async {
     try {
       FilePickerResult? result =
-      await FilePicker.platform.pickFiles(type: FileType.image);
+          await FilePicker.platform.pickFiles(type: FileType.image);
       if (result == null) return;
 
       setState(() {
@@ -98,11 +95,6 @@ class _AddCentersState extends State<AddCenters> {
       log(e.toString());
     }
   }
-  Future selectedMap()async{
-    selectedDoc= doctorList.firstWhere((doc) => doc["Name"] == doctor);
-    selectedVol= volunteerList.firstWhere((vol) => vol["name"] == volunteer);
-    selectedAmb= ambulanceList.firstWhere((amb) => amb["name"] == ambulance);
-}
 
   @override
   Widget build(BuildContext context) {
@@ -175,26 +167,31 @@ class _AddCentersState extends State<AddCenters> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             FutureBuilder(
-                              future: callingDoctors(),
-                              builder: (context, snapshot) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: DropdownMenu<String>(
-                                    initialSelection: "Doctor",
-                                    onSelected: (String? value) {
-                                      setState(() {
-                                        doctor = value!;
-                                      });
-                                    },
-                                    dropdownMenuEntries: doctorNames
-                                        .map<DropdownMenuEntry<String>>((String value) {
-                                      return DropdownMenuEntry<String>(
-                                          value: value, label: value);
-                                    }).toList(),
-                                  ),
-                                );
-                              }
-                            ),
+                                future: callingDoctors(),
+                                builder: (context, snapshot) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: DropdownMenu<String>(
+                                      initialSelection: "Doctor",
+                                      onSelected: (String? value) {
+                                        setState(() async {
+                                          final snapshotDoc =
+                                              await DataBaseMethods()
+                                                  .getDoctor();
+                                          for (var doc in snapshotDoc.docs) {
+                                            doctor= (doc["id"]);
+                                          }
+                                        });
+                                      },
+                                      dropdownMenuEntries: doctorNames
+                                          .map<DropdownMenuEntry<String>>(
+                                              (String value) {
+                                        return DropdownMenuEntry<String>(
+                                            value: value, label: value);
+                                      }).toList(),
+                                    ),
+                                  );
+                                }),
                             FutureBuilder(
                                 future: callingVolunteers(),
                                 builder: (context, snapshot) {
@@ -203,19 +200,24 @@ class _AddCentersState extends State<AddCenters> {
                                     child: DropdownMenu<String>(
                                       initialSelection: "Volunteer",
                                       onSelected: (String? value) {
-                                        setState(() {
-                                          volunteer = value!;
+                                        setState(() async {
+                                          final snapshotDoc =
+                                              await DataBaseMethods()
+                                                  .getVolunteer();
+                                          for (var doc in snapshotDoc.docs) {
+                                            volunteer= (doc["id"]);
+                                          }
                                         });
                                       },
                                       dropdownMenuEntries: volunteerNames
-                                          .map<DropdownMenuEntry<String>>((String value) {
+                                          .map<DropdownMenuEntry<String>>(
+                                              (String value) {
                                         return DropdownMenuEntry<String>(
                                             value: value, label: value);
                                       }).toList(),
                                     ),
                                   );
-                                }
-                            ),
+                                }),
                             FutureBuilder(
                                 future: callingAmbulance(),
                                 builder: (context, snapshot) {
@@ -224,19 +226,24 @@ class _AddCentersState extends State<AddCenters> {
                                     child: DropdownMenu<String>(
                                       initialSelection: "Ambulance",
                                       onSelected: (String? value) {
-                                        setState(() {
-                                          ambulance = value!;
+                                        setState(() async {
+                                          final snapshotDoc =
+                                              await DataBaseMethods()
+                                                  .getAmbulance();
+                                          for (var doc in snapshotDoc.docs) {
+                                            ambulance= (doc["id"]);
+                                          }
                                         });
                                       },
                                       dropdownMenuEntries: ambulanceNames
-                                          .map<DropdownMenuEntry<String>>((String value) {
+                                          .map<DropdownMenuEntry<String>>(
+                                              (String value) {
                                         return DropdownMenuEntry<String>(
                                             value: value, label: value);
                                       }).toList(),
                                     ),
                                   );
-                                }
-                            ),
+                                }),
                           ],
                         ),
                         TextFormField(
@@ -301,24 +308,24 @@ class _AddCentersState extends State<AddCenters> {
                                     if (_formKey.currentState!.validate()) {
                                       FirebaseAuth.instance
                                           .createUserWithEmailAndPassword(
-                                          email: emailController.text,
-                                          password: passwordController.text)
+                                              email: emailController.text,
+                                              password: passwordController.text)
                                           .then((credential) async {
                                         if (kIsWeb && _image != null) {
                                           Reference reference = FirebaseStorage
                                               .instance
                                               .ref()
                                               .child(
-                                              'centers/${DateTime.now().millisecondsSinceEpoch}.jpg');
+                                                  'centers/${DateTime.now().millisecondsSinceEpoch}.jpg');
                                           try {
                                             UploadTask uploadTask =
-                                            reference.putData(
-                                                _image!,
-                                                SettableMetadata(
-                                                    contentType:
-                                                    'image/jpeg'));
+                                                reference.putData(
+                                                    _image!,
+                                                    SettableMetadata(
+                                                        contentType:
+                                                            'image/jpeg'));
                                             TaskSnapshot snapshot =
-                                            await uploadTask;
+                                                await uploadTask;
                                             imageURL = await snapshot.ref
                                                 .getDownloadURL();
                                           } catch (error) {
@@ -329,12 +336,12 @@ class _AddCentersState extends State<AddCenters> {
                                               .instance
                                               .ref()
                                               .child(
-                                              'centers/${DateTime.now().millisecondsSinceEpoch}.jpg');
+                                                  'centers/${DateTime.now().millisecondsSinceEpoch}.jpg');
                                           try {
                                             UploadTask uploadTask = reference
                                                 .putFile(selectedImage!);
                                             TaskSnapshot snapshot =
-                                            await uploadTask;
+                                                await uploadTask;
                                             imageURL = await snapshot.ref
                                                 .getDownloadURL();
                                           } catch (error) {
@@ -344,7 +351,6 @@ class _AddCentersState extends State<AddCenters> {
                                           print('No image selected');
                                         }
                                         String id = credential.user!.uid;
-                                        await selectedMap();
                                         Map<String, dynamic> centerInfoMap = {
                                           "Image": imageURL,
                                           "Name": nameController.text,
@@ -359,13 +365,17 @@ class _AddCentersState extends State<AddCenters> {
                                             .addCenters(centerInfoMap, id)
                                             .then((value) {
                                           Fluttertoast.showToast(
-                                              msg: "Data Uploaded Successfully",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.CENTER,
-                                              timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.grey,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0).then((value) => Navigator.pop(context));
+                                                  msg:
+                                                      "Data Uploaded Successfully",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.CENTER,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.grey,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0)
+                                              .then((value) =>
+                                                  Navigator.pop(context));
                                         });
                                       });
                                     }
@@ -373,7 +383,7 @@ class _AddCentersState extends State<AddCenters> {
                                   style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(5)),
+                                              BorderRadius.circular(5)),
                                       foregroundColor: Colors.black,
                                       backgroundColor: Colors.white),
                                   child: const Padding(

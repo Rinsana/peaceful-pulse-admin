@@ -266,9 +266,11 @@ class _AdminAddOfficialsState extends State<AdminAddOfficials> {
                                             "Designation":
                                                 designationController.text,
                                             "Password": passwordController.text,
+                                            "Phone": phoneController.text,
                                             "id": id
                                           };
                                           // dara
+                                          print(officialInfoMap);
                                           await switch (dropdownValue) {
                                             'Doctor' => DataBaseMethods()
                                                 .addDoctors(officialInfoMap, id),

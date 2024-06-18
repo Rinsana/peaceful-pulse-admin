@@ -22,7 +22,6 @@ class _AddCampState extends State<AddCamp> {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController centerNameController = TextEditingController();
 
   late DateTime? date;
   List<String> centerNames = [];
@@ -57,6 +56,7 @@ class _AddCampState extends State<AddCamp> {
       centerList.add(doc.data());
       centerNames.add(doc["Name"]);
     }
+    center = centerNames.first;
   }
 
   @override
@@ -114,21 +114,24 @@ class _AddCampState extends State<AddCamp> {
                         FutureBuilder(
                             future: callingCenters(),
                             builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting){
+                                return const Center(child: CircularProgressIndicator());
+                              }
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: DropdownMenu<String>(
-                                  initialSelection: "Center",
+                                  initialSelection: centerNames.first,
+                                  onSelected: (String? value) {
+                                    setState(() {
+                                      center = value!;
+                                    });
+                                  },
                                   dropdownMenuEntries: centerNames
                                       .map<DropdownMenuEntry<String>>(
                                           (String value) {
                                     return DropdownMenuEntry<String>(
                                         value: value, label: value);
                                   }).toList(),
-                                  onSelected: (value) {
-                                    setState(() {
-                                      center = value!;
-                                    });
-                                  },
                                 ),
                               );
                             }),
@@ -190,7 +193,7 @@ class _AddCampState extends State<AddCamp> {
                                         "Date": dateController.text,
                                         "Phone": phoneController.text,
                                         "Center Name":
-                                            centerNameController.text,
+                                            center,
                                         "id": id
                                       };
                                       await DataBaseMethods()

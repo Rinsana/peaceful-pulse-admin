@@ -1,27 +1,39 @@
-import 'package:peaceful_pulse_admin/models/center_model.dart';
+
+import 'package:peaceful_pulse_admin/models/doctor_model.dart';
 
 class CampModel {
-  final String center;
-  final String campDate;
-  final String phoneNumber;
-  final String location;
+  String centerName;
+  String location;
+  String date;
+  String phoneNumber;
+  String id;
+  DoctorModel doctor;
 
-  CampModel(
-      {required this.center,
-      required this.campDate,
-      required this.phoneNumber,
-      required this.location});
-
-  factory CampModel.fromJson(Map<String, dynamic> json) {
-    return CampModel(center: json['center'], campDate: json['campDate'], phoneNumber: json['phoneNumber'], location: json['location']);
+  CampModel({
+    required this.centerName,
+    required this.location,
+    required this.date,
+    required this.phoneNumber,
+    required this.id,
+    required this.doctor
+  });
+  factory CampModel.fromMap(Map<String, dynamic> map) {
+    return CampModel(
+        centerName: map['centerName'],
+        location: map['location'],
+        date: map['date'],
+        phoneNumber: map['phoneNumber'],
+        id: map['id'],
+        doctor: map['doctor']);
   }
-
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'center': center,
-      'campDate': campDate,
+      'centerName': centerName,
       'location': location,
+      'date': date,
       'phoneNumber': phoneNumber,
+      'id': id,
+      'doctor': doctor
     };
   }
 }

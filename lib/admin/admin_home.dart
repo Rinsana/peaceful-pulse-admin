@@ -40,7 +40,6 @@ class _AdminHomeState extends State<AdminHome> {
     AdminMedicinesView(),
     CampView(),
     CentersView(),
-    Text("Notifications view"),
   ];
 
   List<IconData>iconList=[
@@ -104,12 +103,6 @@ class _AdminHomeState extends State<AdminHome> {
                         icon: Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.0),
                           child: Icon(iconList[3]),
-                        ),
-                        label: Text("")),
-                    NavigationRailDestination(
-                        icon: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20.0),
-                          child: Icon(iconList[4]),
                         ),
                         label: Text("")),
                   ],
